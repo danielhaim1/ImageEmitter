@@ -33,7 +33,6 @@
   ],
   "scripts": {
     "build": "npx webpack --mode production",
-    "minify": "terser dist/index.js -o dist/index.min.js",
     "release": "npm version patch && npm run build && npm run minify && git add -A && git commit -m 'Release: v$(node -p \"require('./package.json').version\")' && git push && npm publish",
     "test": "jest",
     "tree": "tree -I 'node_modules'"
