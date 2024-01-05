@@ -1,8 +1,8 @@
 # Image Emitter
 
-[![npm version](https://img.shields.io/npm/v/@danielhaim/image-emitter)](https://www.npmjs.com/package/@danielhaim/image-emitter)
-[![Downloads](https://img.shields.io/npm/dt/@danielhaim/image-emitter.svg)](https://www.npmjs.com/package/@danielhaim/image-emitter)
-![GitHub](https://img.shields.io/github/license/danielhaim1/image-emitter)
+[![npm version](https://img.shields.io/npm/v/@danielhaim/ImageEmitter)](https://www.npmjs.com/package/@danielhaim/ImageEmitter)
+[![Downloads](https://img.shields.io/npm/dt/@danielhaim/ImageEmitter.svg)](https://www.npmjs.com/package/@danielhaim/ImageEmitter)
+![GitHub](https://img.shields.io/github/license/danielhaim1/ImageEmitter)
 
 A utility for loading images with event emission, utilizing an extended EvEmitter.
 
