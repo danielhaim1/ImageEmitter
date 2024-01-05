@@ -7,10 +7,9 @@
 A utility for loading images with event emission, utilizing an extended EvEmitter.
 
 ## Key Attributes
-- Event-driven image loading.
 - Basic event handling (e.g., done, progress, fail).
 - Status tracking for image loading.
-- Developed using JavaScript ES6.
+- Image classifier utility (not documented).
 
 ## Demo
 
