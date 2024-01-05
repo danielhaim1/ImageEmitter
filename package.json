@@ -33,7 +33,7 @@
   ],
   "scripts": {
     "build": "npx webpack --mode production",
-    "release": "npm version patch && npm run build && npm run minify && git add -A && git commit -m 'Release: v$(node -p \"require('./package.json').version\")' && git push && npm publish",
+    "release": "npm version patch && npm run build && git add -A && git commit -m 'Release: v$(node -p \"require('./package.json').version\")' && git push && npm publish",
     "test": "jest",
     "tree": "tree -I 'node_modules'"
   },
