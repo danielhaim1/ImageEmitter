@@ -2,21 +2,26 @@
 
 [![npm version](https://img.shields.io/npm/v/@danielhaim/image-emitter)](https://www.npmjs.com/package/@danielhaim/image-emitter)
 [![Downloads](https://img.shields.io/npm/dt/@danielhaim/image-emitter.svg)](https://www.npmjs.com/package/@danielhaim/image-emitter)
-![GitHub](https://img.shields.io/github/license/danielhaim1/image-emitter)
+![GitHub](https://img.shields.io/github/license/danielhaim1/eventmodulator)
 
-A utility for loading images with event emission, utilizing an extended EvEmitter.
+<!-- TOC --><a name="image-emitter"></a>
+ImageEmitter is a streamlined utility designed for image loading tasks through event-driven approach. The utility manages the loading of images and extends its functionality to categorize images based on their dimensions and format.
 
+<!-- TOC --><a name="key-attributes"></a>
 ## Key Attributes
-- Basic event handling (e.g., done, progress, fail).
-- Status tracking for image loading.
-- Image classifier utility (not documented).
+- Facilitates image loading with event-driven techniques.
+- Includes basic event handling methods such as `done`, `progress`, `always`, and `fail`.
+- Keeps track of image loading status including progress, completion, and potential errors.
+- Built using JavaScript ES6 for improved functionality and ease of understanding.
 
+<!-- TOC --><a name="demo"></a>
 ## Demo
 
 <a target="_blank" href="https://codepen.io/danielhaim/pen/VwqqoKw">
     <img src="https://raw.githubusercontent.com/danielhaim1/image-emitter/main/__test__/demo.png" width="100%" height="auto" alt="Image Emitter Demo">
 </a>
 
+<!-- TOC --><a name="table-of-contents"></a>
 <!-- TOC start -->
 ## Table of Contents
 - [Image Emitter](#image-emitter)
@@ -33,28 +38,6 @@ A utility for loading images with event emission, utilizing an extended EvEmitte
       + [Event Listeners](#event-listeners)
    * [Repository Structure](#repository-structure)
 <!-- TOC end -->
-
-<!-- TOC --><a name="image-emitter"></a>
-# Image Emitter
-
-[![npm version](https://img.shields.io/npm/v/@danielhaim/image-emitter)](https://www.npmjs.com/package/@danielhaim/image-emitter)
-[![Downloads](https://img.shields.io/npm/dt/@danielhaim/image-emitter.svg)](https://www.npmjs.com/package/@danielhaim/image-emitter)
-![GitHub](https://img.shields.io/github/license/danielhaim1/eventmodulator)
-
-Eventful Image Loader is a streamlined and intuitive utility designed for the task of image loading through event-driven approach. The utility manages the loading of images and extends its functionality to categorize images based on their dimensions and format.
-
-<!-- TOC --><a name="key-attributes"></a>
-## Key Attributes
-- Facilitates image loading with event-driven techniques.
-- Includes basic event handling methods such as `done`, `progress`, `always`, and `fail`.
-- Keeps track of image loading status including progress, completion, and potential errors.
-- Built using JavaScript ES6 for improved functionality and ease of understanding.
-
-<!-- TOC --><a name="demo"></a>
-## Demo
-
-<!-- TOC --><a name="table-of-contents"></a>
-## Table of Contents
 
 <!-- TOC --><a name="installation"></a>
 ## Installation
