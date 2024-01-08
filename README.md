@@ -125,7 +125,6 @@ A utility class for image analysis.
 <!-- TOC --><a name="repository-structure"></a>
 ## Repository Structure
 ```
-image-emitter/
 ├── LICENSE
 ├── README.md
 ├── __test__
