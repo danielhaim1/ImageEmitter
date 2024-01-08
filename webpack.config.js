@@ -8,12 +8,14 @@ module.exports = [{
     target: "web",
     entry: "./index.js",
     output: {
-        filename: "imageEmitter.amd.js",
+        filename: "ImageEmitter.amd.js",
         path: path.resolve(__dirname, "dist")
     },
     optimization: {
         minimize: !0,
-        minimizer: [new TerserPlugin]
+        minimizer: [new TerserPlugin({
+          extractComments: false,
+        })]
     },
     module: {
         rules: [{
@@ -37,7 +39,7 @@ module.exports = [{
     target: "node",
     entry: "./index.js",
     output: {
-        filename: "imageEmitter.js",
+        filename: "ImageEmitter.js",
         path: path.resolve(__dirname, "dist"),
         libraryTarget: "commonjs2"
     },
@@ -54,7 +56,7 @@ module.exports = [{
                 options: {
                     presets: [["@babel/preset-env", {
                         targets: {
-                            node: "10"
+                            node: "current"
                         },
                         modules: "commonjs"
                     },],]

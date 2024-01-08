@@ -1,4 +1,4 @@
-import { ImageEmitter } from './src/ImageEmitter.js';
+import { ImageEmitter } from './src/index.js';
 import { ImageHelper } from './src/ImageHelper.js';
 
 // Export for Node.js environment
