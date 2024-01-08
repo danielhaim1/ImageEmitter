@@ -1,5 +1,5 @@
 {
-  "name": "@danielhaim/image-emitter",
+  "name": "@danielhaim/ImageEmitter",
   "version": "1.0.3",
   "description": "A utility for loading images with event emission, utilizing an extended EvEmitter.",
   "keywords": [
@@ -11,13 +11,13 @@
     "node",
     "javascript"
   ],
-  "homepage": "https://github.com/danielhaim1/image-emitter#readme",
+  "homepage": "https://github.com/danielhaim1/ImageEmitter#readme",
   "bugs": {
-    "url": "https://github.com/danielhaim1/image-emitter/issues"
+    "url": "https://github.com/danielhaim1/ImageEmitter/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/danielhaim1/image-emitter.git"
+    "url": "git+https://github.com/danielhaim1/ImageEmitter.git"
   },
   "license": "MIT",
   "author": {
