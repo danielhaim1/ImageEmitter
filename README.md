@@ -1,7 +1,7 @@
 # Image Emitter
 
-[![npm version](https://img.shields.io/npm/v/@danielhaim/image-emitter)](https://www.npmjs.com/package/@danielhaim/imageemitter)
-[![Downloads](https://img.shields.io/npm/dt/@danielhaim/image-emitter.svg)](https://www.npmjs.com/package/@danielhaim/imageemitter)
+[![npm version](https://img.shields.io/npm/v/@danielhaim/imageemitter)](https://www.npmjs.com/package/@danielhaim/imageemitter)
+[![Downloads](https://img.shields.io/npm/dt/@danielhaim/imageemitter.svg)](https://www.npmjs.com/package/@danielhaim/imageemitter)
 ![GitHub](https://img.shields.io/github/license/danielhaim1/imageemitter)
 
 <!-- TOC --><a name="image-emitter"></a>
