@@ -1,8 +1,8 @@
 # Image Emitter
 
-[![npm version](https://img.shields.io/npm/v/@danielhaim/image-emitter)](https://www.npmjs.com/package/@danielhaim/image-emitter)
-[![Downloads](https://img.shields.io/npm/dt/@danielhaim/image-emitter.svg)](https://www.npmjs.com/package/@danielhaim/image-emitter)
-![GitHub](https://img.shields.io/github/license/danielhaim1/eventmodulator)
+[![npm version](https://img.shields.io/npm/v/@danielhaim/image-emitter)](https://www.npmjs.com/package/@danielhaim/imageemitter)
+[![Downloads](https://img.shields.io/npm/dt/@danielhaim/image-emitter.svg)](https://www.npmjs.com/package/@danielhaim/imageemitter)
+![GitHub](https://img.shields.io/github/license/danielhaim1/imageemitter)
 
 <!-- TOC --><a name="image-emitter"></a>
 ImageEmitter is a streamlined utility designed for image loading tasks through event-driven approach. The utility manages the loading of images and extends its functionality to categorize images based on their dimensions and format.
