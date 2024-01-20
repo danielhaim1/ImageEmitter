@@ -1,7 +1,21 @@
 const path = require("path"),
     isDevelopment = "development" === process.env.NODE_ENV,
     nodeExternals = require("webpack-node-externals"),
-    TerserPlugin = require("terser-webpack-plugin");
+    TerserPlugin = require("terser-webpack-plugin"),
+    webpack = require("webpack");
+
+const package = require('./package.json');
+
+const banner =
+    `/*!
+ * ${package.name} - v${package.version} - ${new Date().toISOString().split('T')[0]}
+ * ${package.repository.url}
+ * Copyright (c) ${new Date().getFullYear()} ${package.author.name}, Licensed ${package.license}
+ */`;
+
+const terserOptions = {
+    extractComments: false,
+};
 
 module.exports = [{
     mode: "production",
@@ -12,11 +26,15 @@ module.exports = [{
         path: path.resolve(__dirname, "dist")
     },
     optimization: {
-        minimize: !0,
-        minimizer: [new TerserPlugin({
-          extractComments: false,
-        })]
+        minimize: true,
+        minimizer: [new TerserPlugin(terserOptions)],
     },
+    plugins: [
+        new webpack.BannerPlugin({
+            banner: banner,
+            raw: true
+        })
+    ],
     module: {
         rules: [{
             test: /\.js$/,
@@ -44,9 +62,15 @@ module.exports = [{
         libraryTarget: "commonjs2"
     },
     optimization: {
-        minimize: !0,
-        minimizer: [new TerserPlugin]
+        minimize: true,
+        minimizer: [new TerserPlugin(terserOptions)],
     },
+    plugins: [
+        new webpack.BannerPlugin({
+            banner: banner,
+            raw: true
+        })
+    ],
     module: {
         rules: [{
             test: /\.js$/,
