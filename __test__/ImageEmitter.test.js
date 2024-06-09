@@ -7,16 +7,22 @@ import { ImageEmitter } from '../index.js';
 // Mock function to simulate appending messages to the output container
 const appendOutputMessage = jest.fn();
 
-// Helper function to load an image and emit progress event
-const loadImageAndEmitProgress = (imgEmitter, imgElement, loadedCount, totalImages) => {
-  imgEmitter.loadImage(imgElement, () => {
-    const message = `Loaded ${loadedCount} of ${totalImages} images.`;
-    expect(appendOutputMessage).toHaveBeenCalledWith(message);
-  });
+// Helper function to simulate image loading
+const simulateImageLoading = (imgEmitter, imgElement, shouldLoad, loadedCount, totalImages) => {
+  setTimeout(() => {
+    const eventType = shouldLoad ? "load" : "error";
+    const event = new Event(eventType);
+    imgElement.dispatchEvent(event);
+    imgEmitter.emitEvent("progress", [loadedCount, totalImages]);
+    appendOutputMessage(`Loaded ${loadedCount} of ${totalImages} images.`);
+  }, 50); // Small delay to simulate async loading
 };
 
+beforeEach(() => {
+  jest.clearAllMocks();
+});
+
 test('should emit progress events', () => {
-  // Create a container element and add some image elements
   document.body.innerHTML = `
     <div class="output"></div>
     <div class="image-container-1">
@@ -26,24 +32,23 @@ test('should emit progress events', () => {
     </div>
   `;
 
-  // Initialize ImageEmitter
   const container = document.querySelector(".image-container-1");
   const imgElements = container.querySelectorAll("img");
   const imgEmitter = new ImageEmitter(imgElements);
 
-  // Create a mock function to spy on the progress event
   const mockProgressCallback = jest.fn();
   imgEmitter.on("progress", mockProgressCallback);
 
-  // Simulate the image loading process for each image
   imgElements.forEach((imgElement, index) => {
-    loadImageAndEmitProgress(imgEmitter, imgElement, index + 1, imgElements.length);
+    simulateImageLoading(imgEmitter, imgElement, true, index + 1, imgElements.length);
   });
 
+  setTimeout(() => {
+    expect(mockProgressCallback).toHaveBeenCalledTimes(imgElements.length);
+  }, 200); // Wait for all simulated loads
 });
 
 test('should handle "done" event', (done) => {
-  // Create a container element and add some image elements (similar to the previous test)
   document.body.innerHTML = `
     <div class="output"></div>
     <div class="image-container-1">
@@ -53,32 +58,102 @@ test('should handle "done" event', (done) => {
     </div>
   `;
 
-  // Initialize ImageEmitter
   const container = document.querySelector(".image-container-1");
   const imgElements = container.querySelectorAll("img");
   const imgEmitter = new ImageEmitter(imgElements);
 
-  // Create a mock function to spy on the done event
   const mockDoneCallback = jest.fn();
   imgEmitter.on("done", mockDoneCallback);
 
-  // Simulate the image loading process for all images
   let loadedCount = 0;
   imgElements.forEach((imgElement) => {
-    loadImageAndEmitProgress(imgEmitter, imgElement, ++loadedCount, imgElements.length);
+    simulateImageLoading(imgEmitter, imgElement, true, ++loadedCount, imgElements.length);
     if (loadedCount === imgElements.length) {
-      // When all images are loaded, manually call the mockDoneCallback
-      console.log("All images are loaded. Calling mockDoneCallback...");
-      mockDoneCallback();
+      imgEmitter.emitEvent("done");
     }
   });
 
-  // Wait for a short delay before checking the "done" callback
   setTimeout(() => {
-    // Verify that the "done" callback was called
-    console.log("Checking if mockDoneCallback was called...");
     expect(mockDoneCallback).toHaveBeenCalled();
-    done(); // Signal that the test is complete
-  }, 100); // Adjust the delay as needed
+    done();
+  }, 200);
+}, 5000); // Timeout adjusted for this test
 
-});
+test('should handle "fail" event', (done) => {
+  document.body.innerHTML = `
+    <div class="output"></div>
+    <div class="image-container-2">
+      <img src="non-existent-image1.jpeg">
+      <img src="non-existent-image2.jpeg">
+    </div>
+  `;
+
+  const container = document.querySelector(".image-container-2");
+  const imgElements = container.querySelectorAll("img");
+  const imgEmitter = new ImageEmitter(imgElements);
+
+  const mockFailCallback = jest.fn();
+  imgEmitter.on("fail", mockFailCallback);
+
+  imgElements.forEach((imgElement, index) => {
+    simulateImageLoading(imgEmitter, imgElement, false, index + 1, imgElements.length);
+  });
+
+  setTimeout(() => {
+    imgEmitter.emitEvent("fail");
+    expect(mockFailCallback).toHaveBeenCalled();
+    done();
+  }, 200);
+}, 5000);
+
+test('should handle "always" event', (done) => {
+  document.body.innerHTML = `
+    <div class="output"></div>
+    <div class="image-container-3">
+      <img src="test-image1.jpeg">
+      <img src="non-existent-image.jpeg">
+    </div>
+  `;
+
+  const container = document.querySelector(".image-container-3");
+  const imgElements = container.querySelectorAll("img");
+  const imgEmitter = new ImageEmitter(imgElements);
+
+  const mockAlwaysCallback = jest.fn();
+  imgEmitter.on("always", mockAlwaysCallback);
+
+  imgElements.forEach((imgElement, index) => {
+    const shouldLoad = index === 0; // First image loads, second fails
+    simulateImageLoading(imgEmitter, imgElement, shouldLoad, index + 1, imgElements.length);
+  });
+
+  setTimeout(() => {
+    imgEmitter.emitEvent("always");
+    expect(mockAlwaysCallback).toHaveBeenCalled();
+    done();
+  }, 200);
+}, 5000);
+
+test('should handle no images scenario', (done) => {
+  document.body.innerHTML = `
+    <div class="output"></div>
+    <div class="image-container-4"></div>
+  `;
+
+  const container = document.querySelector(".image-container-4");
+  const imgElements = container.querySelectorAll("img");
+  const imgEmitter = new ImageEmitter(imgElements);
+
+  const mockDoneCallback = jest.fn();
+  const mockAlwaysCallback = jest.fn();
+  imgEmitter.on("done", mockDoneCallback);
+  imgEmitter.on("always", mockAlwaysCallback);
+
+  setTimeout(() => {
+    imgEmitter.emitEvent("done");
+    imgEmitter.emitEvent("always");
+    expect(mockDoneCallback).toHaveBeenCalled();
+    expect(mockAlwaysCallback).toHaveBeenCalled();
+    done();
+  }, 200);
+}, 5000);

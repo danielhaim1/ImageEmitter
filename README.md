@@ -95,7 +95,7 @@ A foundational class for event handling.
 
 <!-- TOC --><a name="imageemitter"></a>
 #### `ImageEmitter`
-Extends EvEmitter for image loading.
+Extends `ImageEvents` for image loading.
 
 - `constructor(elements)`: Initializes with a set of DOM elements.
 - `initImages()`: Prepares images for loading.
@@ -103,16 +103,21 @@ Extends EvEmitter for image loading.
 - `loadImage(imgElement, callback)`: Loads a single image.
 - `loadBackgroundImage(url, callback)`: Loads a background image.
 - `progress(loadedCount, totalImages)`: Tracks the progress of image loading.
+- `hasBackgroundImage(element)`: Checks if an element has a background image.
+- `getBackgroundImageUrl(element)`: Retrieves the background image URL of an element.
 
 <!-- TOC --><a name="imagehelper"></a>
 #### `ImageHelper`
-A utility class for image analysis.
+A utility class for image analysis and classification.
 
+- `constructor(options)`: Initializes the class with custom size definitions and an option to use CSS classes or data attributes.
+  - `options.sizeDefinitions`: Custom size definitions for classifying images (e.g., { sm: 600, md: 1200, lg: 1500, xl: Infinity }).
+  - `options.useClasses`: Boolean to choose between using CSS classes or data attributes.
 - `static getNaturalDimensions(img)`: Returns the natural dimensions of an image.
 - `static getImageFormat(img)`: Determines the format of an image (landscape, portrait, square).
-- `static getImageSize(img)`: Classifies the size of an image (small, medium, large).
-- `static classifyImage(img)`: Returns the format and size classification of an image.
-- `static classifyImages(images)`: Applies format and size classification to a collection of images.
+- `getImageSize(img)`: Classifies the size of an image based on custom size definitions.
+- `classifyImage(img)`: Returns the format and size classification of an image.
+- `classifyImages(images)`: Applies format and size classification to a collection of images by either adding CSS classes or `data-img-format` and `data-img-size` attributes.
 
 <!-- TOC --><a name="event-listeners"></a>
 ### Event Listeners
@@ -128,22 +133,22 @@ A utility class for image analysis.
 ├── LICENSE
 ├── README.md
 ├── __test__
-│   └── ImageEmitter.test.js
-│   └── demo.png
-│   └── test-image1.jpeg
-│   └── test-image2.jpeg
+│   ├── ImageEmitter.test.js
+│   ├── ImageHelper.test.js
+│   ├── test-image1.jpeg
+│   ├── test-image2.jpeg
 │   └── test-image3.jpeg
 ├── babel.config.js
-├── demo
-│   └── index.html
 ├── dist
+│   ├── imageEmitter.amd.js
+│   └── imageEmitter.js
 ├── index.js
 ├── jest.config.js
 ├── package-lock.json
 ├── package.json
 ├── src
-│   ├── ImageEmitter.js
 │   ├── ImageEvents.js
-│   └── ImageHelper.js
+│   ├── ImageHelper.js
+│   └── index.js
 └── webpack.config.js
 ```
