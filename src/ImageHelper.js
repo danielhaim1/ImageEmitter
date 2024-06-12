@@ -5,7 +5,11 @@ export class ImageHelper {
    * @param {boolean} options.useClasses - Whether to use CSS classes instead of data attributes.
    */
   constructor(options = {}) {
-    this.sizeDefinitions = options.sizeDefinitions || { sm: 600, md: 1200, lg: Infinity };
+    this.sizeDefinitions = options.sizeDefinitions || {
+      sm: 600,
+      md: 1200,
+      lg: Infinity
+    };
     this.useClasses = options.useClasses || false;
   }
 
@@ -15,7 +19,10 @@ export class ImageHelper {
    * @returns {{ width: number | null, height: number | null }} - The natural width and height of the image.
    */
   static getNaturalDimensions(img) {
-    if (!(img instanceof HTMLImageElement)) return { width: null, height: null };
+    if (!(img instanceof HTMLImageElement)) return {
+      width: null,
+      height: null
+    };
     return {
       width: img.naturalWidth || null,
       height: img.naturalHeight || null,
@@ -28,7 +35,10 @@ export class ImageHelper {
    * @returns {string | null} - The format of the image.
    */
   static getImageFormat(img) {
-    const { width, height } = this.getNaturalDimensions(img);
+    const {
+      width,
+      height
+    } = this.getNaturalDimensions(img);
     if (!width || !height) return null;
 
     if (width > height) return "landscape";
@@ -42,15 +52,32 @@ export class ImageHelper {
    * @returns {string | null} - The size of the image.
    */
   getImageSize(img) {
-    const { width, height } = ImageHelper.getNaturalDimensions(img);
-    if (!width || !height) return null;
+    const {
+      width,
+      height
+    } = ImageHelper.getNaturalDimensions(img);
+    if (!width || !height) {
+      // console.log(`Image dimensions not found for: ${img.src}`);
+      return null;
+    }
 
+    // console.log(`Calculating size for image: ${img.src} with dimensions width: ${width}, height: ${height}`);
     const sizeDefinitions = this.sizeDefinitions;
 
-    if (width >= sizeDefinitions.lg || height >= sizeDefinitions.lg) return "lg";
-    if (width > sizeDefinitions.md || height > sizeDefinitions.md) return "md";
-    if (width > sizeDefinitions.sm || height > sizeDefinitions.sm) return "sm";
-    return "xs"; // Assuming "xs" for dimensions smaller than "sm"
+    if (width >= sizeDefinitions.lg || height >= sizeDefinitions.lg) {
+      // console.log(`Image size classified as 'lg' for: ${img.src}`);
+      return 'lg';
+    }
+    if (width > sizeDefinitions.md || height > sizeDefinitions.md) {
+      // console.log(`Image size classified as 'md' for: ${img.src}`);
+      return 'md';
+    }
+    if (width > sizeDefinitions.sm || height > sizeDefinitions.sm) {
+      // console.log(`Image size classified as 'sm' for: ${img.src}`);
+      return 'sm';
+    }
+    // console.log(`Image size classified as 'xs' for: ${img.src}`);
+    return 'xs'; // Assuming "xs" for dimensions smaller than "sm"
   }
 
   /**
@@ -59,10 +86,20 @@ export class ImageHelper {
    * @returns {{ format: string | null, size: string | null }} - The classification of the image.
    */
   classifyImage(img) {
-    if (!(img instanceof HTMLImageElement)) return { format: null, size: null };
+    // console.log(`Classifying image: ${img.src}`);
+    if (!(img instanceof HTMLImageElement)) {
+      // console.log('Invalid image element provided.');
+      return {
+        format: null,
+        size: null
+      };
+    }
+    const format = ImageHelper.getImageFormat(img);
+    const size = this.getImageSize(img);
+    // console.log(`Image classified as: Format - ${format}, Size - ${size}`);
     return {
-      format: ImageHelper.getImageFormat(img),
-      size: this.getImageSize(img),
+      format,
+      size
     };
   }
 
@@ -75,7 +112,10 @@ export class ImageHelper {
 
     images.forEach((img) => {
       if (!(img instanceof HTMLImageElement)) return;
-      const { format, size } = this.classifyImage(img);
+      const {
+        format,
+        size
+      } = this.classifyImage(img);
       if (this.useClasses) {
         if (format) img.classList.add(`img-${format}`);
         if (size) img.classList.add(`img-${size}`);
