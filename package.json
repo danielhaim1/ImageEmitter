@@ -1,6 +1,6 @@
 {
   "name": "@danielhaim/imageemitter",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "A utility for loading images with event emission, utilizing an extended EvEmitter.",
   "keywords": [
     "images",
