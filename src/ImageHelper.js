@@ -41,7 +41,7 @@ export class ImageHelper {
       width,
       height
     } = this.getNaturalDimensions(img);
-    if (!width || !height) returnnull;
+    if (!width || !height) return null;
 
 
     if (width > height) return "landscape";
@@ -61,7 +61,7 @@ export class ImageHelper {
       width,
       height
     } = ImageHelper.getNaturalDimensions(img);
-    if (!width || !height) {
+    if (!width || !height) { 
       // console.log(`Image dimensions not found for: ${img.src}`);
       return null;
     }
