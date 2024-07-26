@@ -2,7 +2,7 @@
  * Class representing an event emitter.
  */
 export class ImageEvents {
-  constructor () {
+  constructor() {
     this._events = {};
     this._onceEvents = {};
   }
@@ -14,6 +14,7 @@ export class ImageEvents {
    */
   on(eventName, listener) {
     if (typeof eventName !== 'string' || typeof listener !== 'function') return;
+
     if (!this._events[eventName]) {
       this._events[eventName] = [];
     }
@@ -29,6 +30,7 @@ export class ImageEvents {
    */
   once(eventName, listener) {
     if (typeof eventName !== 'string' || typeof listener !== 'function') return;
+
     this.on(eventName, listener);
     if (!this._onceEvents[eventName]) {
       this._onceEvents[eventName] = new Set();
@@ -43,6 +45,7 @@ export class ImageEvents {
    */
   off(eventName, listener) {
     if (typeof eventName !== 'string' || typeof listener !== 'function') return;
+
     let listeners = this._events[eventName];
     if (listeners) {
       this._events[eventName] = listeners.filter(l => l !== listener);
@@ -59,6 +62,7 @@ export class ImageEvents {
    */
   emitEvent(eventName, args = []) {
     if (typeof eventName !== 'string') return;
+
     const listeners = (this._events[eventName] || []).slice();
     const onceListeners = this._onceEvents[eventName];
     for (const listener of listeners) {

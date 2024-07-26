@@ -2,21 +2,22 @@
  * @jest-environment jsdom
  */
 
-import { ImageEmitter } from '../index.js';
+import {
+  ImageEmitter
+} from '../index.js';
 
 // Mock function to simulate appending messages to the output container
 const appendOutputMessage = jest.fn();
 
 // Helper function to simulate image loading
-const simulateImageLoading = (imgEmitter, imgElement, shouldLoad, loadedCount, totalImages) => {
+const simulateImageLoading = (imgEmitter, imgElement, shouldLoad) => {
   setTimeout(() => {
     const eventType = shouldLoad ? "load" : "error";
     const event = new Event(eventType);
-    imgElement.dispatchEvent(event);
-    imgEmitter.emitEvent("progress", [loadedCount, totalImages]);
-    appendOutputMessage(`Loaded ${loadedCount} of ${totalImages} images.`);
+    imgElement.dispatchEvent(event); // Let the emitter handle the rest
   }, 50); // Small delay to simulate async loading
 };
+
 
 beforeEach(() => {
   jest.clearAllMocks();
@@ -58,26 +59,38 @@ test('should handle "done" event', (done) => {
     </div>
   `;
 
+  console.log('DOM setup complete, image elements about to be queried.');
+
   const container = document.querySelector(".image-container-1");
   const imgElements = container.querySelectorAll("img");
+  console.log(`Found ${imgElements.length} images to simulate loading for.`);
+
   const imgEmitter = new ImageEmitter(imgElements);
+  console.log('ImageEmitter instance created.');
 
   const mockDoneCallback = jest.fn();
   imgEmitter.on("done", mockDoneCallback);
+  console.log('Event listener for "done" event added.');
 
   let loadedCount = 0;
-  imgElements.forEach((imgElement) => {
+  imgElements.forEach((imgElement, index) => {
+    console.log(`Simulating load for image ${index + 1} with src: ${imgElement.src}`);
     simulateImageLoading(imgEmitter, imgElement, true, ++loadedCount, imgElements.length);
+    console.log(`Image ${index + 1} simulated as loaded. Current loaded count: ${loadedCount}`);
+
     if (loadedCount === imgElements.length) {
+      console.log('All images simulated as loaded, emitting "done" event.');
       imgEmitter.emitEvent("done");
     }
   });
 
   setTimeout(() => {
-    expect(mockDoneCallback).toHaveBeenCalled();
+    console.log('Asserting that the "done" event was called once.');
+    expect(mockDoneCallback).toHaveBeenCalledTimes(1);
     done();
   }, 200);
 }, 5000); // Timeout adjusted for this test
+
 
 test('should handle "fail" event', (done) => {
   document.body.innerHTML = `

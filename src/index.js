@@ -3,14 +3,20 @@ import {
 } from './ImageEvents.js';
 
 export class ImageEmitter extends ImageEvents {
+
   /**
    * @param {NodeList|Array} elements - The elements to be observed.
- *  /
+   */
   constructor(elements) {
     super();
     this.images = [];
     this.isComplete = false;
-    this.elements = elements instanceof NodeList ? Array.from(elements) : Array.isArray(elements) ? elements : [elements];
+    this.eventsBound = false; // Added new flag to prevent multiple bindings
+    this.elements = elements instanceof NodeList ?
+      Array.from(elements) :
+      Array.isArray(elements) ?
+      elements :
+      [elements];
     this.initImages();
     this.checkImages();
   }
@@ -30,20 +36,13 @@ export class ImageEmitter extends ImageEvents {
    * Check all images and background images, and start loading them.
    */
   checkImages() {
-    // console.log('Starting to check all images and background images.');
-
     const imgElements = this.elements.filter(element => element.tagName === "IMG");
     const bgElements = this.elements.filter(element => this.hasBackgroundImage(element));
     const totalImages = imgElements.length + bgElements.length;
-
-    // console.log(`Total images found: ${totalImages} (Images: ${imgElements.length}, Backgrounds: ${bgElements.length})`);
-
     let loadedCount = 0;
 
     imgElements.forEach(element => {
-      // console.log(`Attempting to load image: ${element.src}`);
       this.loadImageComplete(element).then(() => {
-        // console.log(`Image loaded: ${element.src}`);
         element.setAttribute("data-loaded", "true");
         loadedCount++;
         this.progress(loadedCount, totalImages);
@@ -53,23 +52,12 @@ export class ImageEmitter extends ImageEvents {
     bgElements.forEach(element => {
       const imageUrl = this.getBackgroundImageUrl(element);
       if (imageUrl) {
-        // console.log(`Attempting to load background image: ${imageUrl}`);
-        this.loadImageComplete({src: imageUrl}).then(() => {
-          // console.log(`Background image loaded: ${imageUrl}`);
+        this.loadImageComplete({
+          src: imageUrl
+        }).then(() => {
           loadedCount++;
           this.progress(loadedCount, totalImages);
         });
-      }
-    });
-  }
-
-  loadImageComplete(imgElement) {
-    return new Promise(resolve => {
-      if (imgElement.complete && imgElement.naturalHeight !== 0) {
-        resolve(imgElement);
-      } else {
-        imgElement.onload = () => resolve(imgElement);
-        imgElement.onerror = () => resolve(imgElement);
       }
     });
   }
@@ -90,7 +78,8 @@ export class ImageEmitter extends ImageEvents {
    */
   getBackgroundImageUrl(element) {
     const backgroundImage = window.getComputedStyle(element).backgroundImage;
-    if (backgroundImage === "none") return null;
+    if (backgroundImage === "none") returnnull;
+
     return backgroundImage.slice(5, -2);
   }
 
@@ -99,23 +88,21 @@ export class ImageEmitter extends ImageEvents {
    * @param {HTMLImageElement} imgElement - The image element to load.
    * @param {Function} callback - The callback to call once loaded.
    */
-  loadImage(imgElement, callback) {
-    const img = new Image();
-    img.onload = () => {
-      this.images.push({
-        imgElement,
-        isLoaded: true
-      });
-      callback();
-    };
-    img.onerror = () => {
-      this.images.push({
-        imgElement,
-        isLoaded: false
-      });
-      callback();
-    };
-    img.src = imgElement.src;
+  loadImageComplete(imgElement) {
+    return new Promise(resolve => {
+      const resolveOnce = () => {
+        imgElement.onload = null;
+        imgElement.onerror = null;
+        resolve(imgElement);
+      };
+
+      if (imgElement.complete && imgElement.naturalHeight !== 0) {
+        resolveOnce();
+      } else {
+        imgElement.onload = resolveOnce;
+        imgElement.onerror = resolveOnce;
+      }
+    });
   }
 
   /**
@@ -151,15 +138,17 @@ export class ImageEmitter extends ImageEvents {
     if (loadedCount === totalImages) {
       this.isComplete = true;
       const failed = this.images.filter(image => !image.isLoaded).length;
-      if (failed === 0) {
-        this.emitEvent("done");
-      } else if (failed === totalImages) {
-        this.emitEvent("fail");
+      if (!this.eventsBound) {
+        if (failed === 0) {
+          this.emitEvent("done");
+        } else if (failed === totalImages) {
+          this.emitEvent("fail");
+        }
+        this.emitEvent("always");
+        this.eventsBound = true; // Set flag after emitting events
       }
-      this.emitEvent("always");
     } else {
       this.emitEvent("progress", [loadedCount, totalImages]);
     }
   }
-
 }

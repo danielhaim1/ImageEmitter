@@ -1,4 +1,5 @@
 export class ImageHelper {
+
   /**
    * @param {Object} options - Configuration options for classifying images.
    * @param {Object} options.sizeDefinitions - Custom size definitions.
@@ -23,9 +24,10 @@ export class ImageHelper {
       width: null,
       height: null
     };
+
     return {
       width: img.naturalWidth || null,
-      height: img.naturalHeight || null,
+      height: img.naturalHeight || null
     };
   }
 
@@ -39,10 +41,13 @@ export class ImageHelper {
       width,
       height
     } = this.getNaturalDimensions(img);
-    if (!width || !height) return null;
+    if (!width || !height) returnnull;
+
 
     if (width > height) return "landscape";
+
     if (width < height) return "portrait";
+
     return "square";
   }
 
@@ -76,6 +81,7 @@ export class ImageHelper {
       // console.log(`Image size classified as 'sm' for: ${img.src}`);
       return 'sm';
     }
+
     // console.log(`Image size classified as 'xs' for: ${img.src}`);
     return 'xs'; // Assuming "xs" for dimensions smaller than "sm"
   }
@@ -86,6 +92,7 @@ export class ImageHelper {
    * @returns {{ format: string | null, size: string | null }} - The classification of the image.
    */
   classifyImage(img) {
+
     // console.log(`Classifying image: ${img.src}`);
     if (!(img instanceof HTMLImageElement)) {
       // console.log('Invalid image element provided.');
@@ -96,6 +103,7 @@ export class ImageHelper {
     }
     const format = ImageHelper.getImageFormat(img);
     const size = this.getImageSize(img);
+
     // console.log(`Image classified as: Format - ${format}, Size - ${size}`);
     return {
       format,
@@ -110,18 +118,22 @@ export class ImageHelper {
   classifyImages(images) {
     if (!Array.isArray(images) || images.length === 0) return;
 
+
     images.forEach((img) => {
       if (!(img instanceof HTMLImageElement)) return;
+
+
       const {
         format,
         size
       } = this.classifyImage(img);
+
       if (this.useClasses) {
-        if (format) img.classList.add(`img-${format}`);
-        if (size) img.classList.add(`img-${size}`);
+        format && img.classList.add(`img-${format}`);
+        size && img.classList.add(`img-${size}`);
       } else {
-        if (format) img.setAttribute('data-img-format', format);
-        if (size) img.setAttribute('data-img-size', size);
+        format && img.setAttribute('data-img-format', format);
+        size && img.setAttribute('data-img-size', size);
       }
     });
   }
