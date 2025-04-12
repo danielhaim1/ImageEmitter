@@ -1,6 +1,7 @@
+// jest.config.js
 module.exports = {
   transform: {
-    '^.+\\.js$': 'esbuild-jest'
+    '^.+\\.js$': 'jest-esbuild'
   },
   testTimeout: 10000,
   testEnvironment: 'jsdom',
