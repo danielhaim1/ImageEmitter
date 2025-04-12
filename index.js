@@ -3,7 +3,11 @@ import { ImageHelper } from './src/ImageHelper.js';
 
 // Export for Node.js environment
 if (typeof module === 'object' && module.exports) {
-  module.exports = { ImageEmitter, ImageHelper };
+  module.exports = {
+    default: ImageEmitter,
+    ImageEmitter,
+    ImageHelper
+  };
 }
 
 // Export for web environment
