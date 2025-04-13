@@ -52,9 +52,9 @@
   ],
   "scripts": {
     "build": "npx webpack --mode production",
-    "release:patch": "npm version patch && npm run build && git add -A && git commit -m 'Release: v$(node -p \"require('./package.json').version\")' && git push && npm publish",
-    "release:minor": "npm version minor && npm run build && git add -A && git commit -m 'Release: v$(node -p \"require('./package.json').version\")' && git push && npm publish",
-    "release:major": "npm version major && npm run build && git add -A && git commit -m 'Release: v$(node -p \"require('./package.json').version\")' && git push && npm publish",
+    "release:patch": "npm version patch && npm run build && git add -A && git commit -m 'Release: v$(node -p \"require('./package.json').version\")' && git push --follow-tags && npm publish",
+    "release:minor": "npm version minor && npm run build && git add -A && git commit -m 'Release: v$(node -p \"require('./package.json').version\")' && git push --follow-tags && npm publish",
+    "release:major": "npm version major && npm run build && git add -A && git commit -m 'Release: v$(node -p \"require('./package.json').version\")' && git push --follow-tags && npm publish",
     "test": "jest",
     "tree": "tree -I 'node_modules'"
   },
