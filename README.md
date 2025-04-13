@@ -44,7 +44,7 @@ ImageEmitter is a streamlined utility designed for image loading tasks through e
 You can install this module via npm:
 
 ```bash
-$ npm i @danielhaim/image-emitter
+$ npm i @danielhaim/imageemitter
 ```
 
 <!-- TOC --><a name="usage"></a>
