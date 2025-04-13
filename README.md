@@ -50,10 +50,17 @@ $ npm i @danielhaim/image-emitter
 <!-- TOC --><a name="usage"></a>
 ## Usage
 ```javascript
-import ImageEmitter from "@danielhaim/image-emitter";
+// For Node.js or build systems (Webpack, Rollup, etc.):
+import { ImageEmitter, ImageHelper } from "@danielhaim/imageemitter";
+
+// For direct browser usage via CDNs like esm.sh or unpkg:
+// If the above doesn't work, you might need to import directly from the source:
+// import { ImageEmitter } from "https://esm.sh/@danielhaim/imageemitter/src/index.js";
+// import { ImageHelper } from "https://esm.sh/@danielhaim/imageemitter/src/ImageHelper.js";
 
 // Initialize image loader for selected images
-const imageEmitter = new ImageEmitter(document.querySelectorAll("img"));
+const images = document.querySelectorAll("img");
+const imageEmitter = new ImageEmitter(images);
 
 // Event Listener: Image Loading Progress
 imageEmitter.on("progress", (loadedCount, totalImages) => {
@@ -73,6 +80,12 @@ imageEmitter.on("fail", () => {
 // Event Listener: Image Loading Completion (Regardless of Success/Failure)
 imageEmitter.on("always", () => {
     console.log("Info: Image loading process completed.");
+});
+
+// Optional: Use ImageHelper to classify images
+const helper = new ImageHelper({ useClasses: true });
+imageEmitter.on("done", () => { // Classify after loading is done
+    helper.classifyImages(Array.from(images));
 });
 ```
 
